@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "droso-audit"
+version = "0.1.0"
+description = "Reproducible audit of whether papers citing Drosophila connectome resources actually use connectome data."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Drosophila Data-Use Audit" }]
+
+dependencies = [
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "requests>=2.31",
+    "tqdm>=4.66",
+    "python-dotenv>=1.0",
+    "tenacity>=8.2",
+    "rapidfuzz>=3.5",
+    "beautifulsoup4>=4.12",
+    "lxml>=4.9",
+    "unidecode>=1.3",
+]
+
+[project.optional-dependencies]
+# Full-text extraction backends. Heavy; only needed for fetch/extract steps.
+fulltext = [
+    "pymupdf>=1.23",
+    "pypdf>=4.0",
+    "trafilatura>=1.6",
+]
+# LLM classification. Either provider works; the classifier auto-detects.
+llm = [
+    "openai>=1.0",
+    "anthropic>=0.40",
+]
+# Convenience metadata clients (optional; raw HTTP is used by default).
+clients = [
+    "biopython>=1.81",
+    "semanticscholar>=0.8",
+    "habanero>=1.2",
+    "tiktoken>=0.5",
+]
+dev = [
+    "pytest>=7.4",
+]
+
+[project.scripts]
+droso-audit = "droso_audit.run_all:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
